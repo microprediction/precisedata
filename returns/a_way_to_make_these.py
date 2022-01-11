@@ -76,8 +76,8 @@ def make_long(chunk=50):
         df = pd.DataFrame(columns=['fathom_rho','fathom_xx','fathom_xy','fathom_yy','fathom_00','fathom_01','fathom_11','fathom_w'])
         df['fathom_rho'] = corrs
         df['fathom_xx'] = var0s
-        df['fathom_xy'] = var1s
-        df['fathom_yy'] = covs
+        df['fathom_xy'] = covs
+        df['fathom_yy'] = var1s
         df['fathom_00'] = p0s
         df['fathom_11'] = p1s
         df['fathom_01'] = p01s
