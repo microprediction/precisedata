@@ -22,24 +22,26 @@ def residuals(f, y, k=1, e=100, n_burn=50):
     """ Feed fast skater all data points, then report residuals """
     assert n_burn>k
     es = [e for _ in y]
-    x, _ = prior(f=f, y=y, k=k, e=es)
+    x, _ = prior(f=f, y=y, k=k, e=es, x0=y[0])
     yt = targets(y)
     xk = [ xt[-1] for xt in x]
-    return np.array(xk[-n_burn:])-np.array(yt[-n_burn:])
+    return np.array(xk[n_burn:])-np.array(yt[n_burn:])
 
 if __name__=='__main__':
     for N in range(350):
-        print(N)
         try:
             df = pd.read_csv(TEMPLATE.replace('N',str(N)))
             y = df['fathom_xx'].values
+            y = [ yt for yt in y if ~np.isnan(yt)]
             Z = None
             cols = [ f.__name__ for f in SKATERS ]
             df_out = pd.DataFrame(columns = cols )
             for f in SKATERS:
                 z = residuals(f, y=y, k=1, e=100, n_burn = 400)
                 df_out[f.__name__]=z
-            df_out.to_csv('skater_residuals_'+str(N)+'.csv')
+            name = 'skater_residuals_'+str(N)+'.csv'
+            df_out.to_csv(name)
+            print(name)
         except:
             pass
 
