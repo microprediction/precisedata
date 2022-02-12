@@ -1,1 +1,0 @@
-daily log differences
